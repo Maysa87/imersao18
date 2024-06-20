@@ -3,6 +3,8 @@ package domain
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -10,6 +12,7 @@ var (
 	ErrEventDateFuture   = errors.New("event date must be in the future")
 	ErrEventCapacityZero = errors.New("event capacity must be greater than 0")
 	ErrEventPriceZero    = errors.New("event price must be greater than 0")
+	ErrEventNotFound     = errors.New("event not found")
 )
 
 type Rating string
@@ -38,7 +41,28 @@ type Event struct {
 	Tickets      []Ticket
 }
 
-func (e Event) Validate() error {
+// NewEvent creates a new event with the given parameters.
+func NewEvent(name, location, organization string, rating Rating, date time.Time, capacity int, price float64, imageUrl string, partnerID int) (*Event, error) {
+	event := &Event{
+		ID:           uuid.New().String(),
+		Name:         name,
+		Location:     location,
+		Organization: organization,
+		Rating:       rating,
+		Date:         date,
+		Capacity:     capacity,
+		Price:        price,
+		ImageURL:     imageUrl,
+		PartnerID:    partnerID,
+		Spots:        make([]Spot, 0),
+	}
+	if err := event.Validate(); err != nil {
+		return nil, err
+	}
+	return event, nil
+}
+
+func (e *Event) Validate() error {
 	if e.Name == "" {
 		return ErrEventNameRequired
 	}
