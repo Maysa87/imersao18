@@ -22,7 +22,7 @@ const (
 type Spot struct {
 	ID       string
 	EventID  string
-	Name     string
+	Name     string // all name uses the rule: Letter+Number. Ex: A1, B2, C3, etc.
 	Status   SpotStatus
 	TicketID string
 }
@@ -35,7 +35,6 @@ func NewSpot(event *Event, name string) (*Spot, error) {
 		Name:    name,
 		Status:  SpotStatusAvailable,
 	}
-
 	if err := spot.Validate(); err != nil {
 		return nil, err
 	}
@@ -44,7 +43,7 @@ func NewSpot(event *Event, name string) (*Spot, error) {
 
 // Validate checks if the spot data is valid.
 func (s *Spot) Validate() error {
-	if s.Name == "" {
+	if len(s.Name) == 0 {
 		return errors.New("spot name is required")
 	}
 	if len(s.Name) < 2 {

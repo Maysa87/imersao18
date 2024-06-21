@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Maysa87/imersao18/golang/internal/events/domain"
-	"github.com/Maysa87/imersao18/golang/internal/events/infra/repository"
+	"github.com/devfullcycle/imersao18/golang/internal/events/domain"
+	"github.com/devfullcycle/imersao18/golang/internal/events/infra/repository"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

@@ -8,13 +8,14 @@ import (
 )
 
 var (
-	ErrEventNameRequired = errors.New("event name is required")
-	ErrEventDateFuture   = errors.New("event date must be in the future")
-	ErrEventCapacityZero = errors.New("event capacity must be greater than 0")
-	ErrEventPriceZero    = errors.New("event price must be greater than 0")
-	ErrEventNotFound     = errors.New("event not found")
+	ErrInvalidEvent    = errors.New("invalid event data")
+	ErrEventFull       = errors.New("event is full")
+	ErrTicketNotFound  = errors.New("ticket not found")
+	ErrTicketNotEnough = errors.New("not enough tickets available")
+	ErrEventNotFound   = errors.New("event not found")
 )
 
+// Rating represents the age restriction for an event.
 type Rating string
 
 const (
@@ -26,6 +27,12 @@ const (
 	Rating18    Rating = "L18"
 )
 
+type User struct {
+	ID    string
+	Email string
+}
+
+// Event represents an event with tickets and spots.
 type Event struct {
 	ID           string
 	Name         string
@@ -62,22 +69,21 @@ func NewEvent(name, location, organization string, rating Rating, date time.Time
 	return event, nil
 }
 
+// Validate checks if the event data is valid.
 func (e *Event) Validate() error {
 	if e.Name == "" {
-		return ErrEventNameRequired
+		return errors.New("event name is required")
 	}
-
 	if e.Date.Before(time.Now()) {
-		return ErrEventDateFuture
+		return errors.New("event date must be in the future")
 	}
-
 	if e.Capacity <= 0 {
-		return ErrEventCapacityZero
+		return errors.New("event capacity must be greater than zero")
+	}
+	if e.Price <= 0 {
+		return errors.New("event price must be greater than zero")
 	}
 
-	if e.Price <= 0 {
-		return ErrEventPriceZero
-	}
 	return nil
 }
 

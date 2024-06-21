@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/Maysa87/imersao18/golang/internal/events/domain"
+	"github.com/devfullcycle/imersao18/golang/internal/events/domain"
 	"github.com/stretchr/testify/mock"
 )
 

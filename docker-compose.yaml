@@ -1,19 +1,5 @@
-services:
-
-  app:
-    build: .
-    ports:
-      - 3000:3000
-      - 3001:3001
-    volumes:
-      - .:/home/node/app
-
-  db:
-    image: mysql:8.0.30-debian
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - 3306:3306
-    volumes:
-      - ./.docker/mysql:/docker-entrypoint-initdb.d
-    #   - ./.docker/dbdata:/var/lib/mysql
+include:
+  - golang/docker-compose.yaml
+  - nestjs-partners-api/docker-compose.yaml
+  - nextjs-frontend/docker-compose.yaml
+  - kong-api-gateway/docker-compose.with-dbless.yaml
